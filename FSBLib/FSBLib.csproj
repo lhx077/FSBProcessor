@@ -5,13 +5,14 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>FSB音频文件处理库，支持FSB文件的解码和打包</Description>
-    <Authors>FSBProcessor</Authors>
-    <Version>1.0.0</Version>
+    <Authors>lhx077</Authors>
+    <Version>1.1.0</Version>
+    <Copyright>lhx077</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="NAudio" Version="2.1.0" />
   </ItemGroup>
 
 </Project>
