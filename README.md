@@ -1,5 +1,7 @@
 > **⚠️ 警告：** 本项目目前处于Alpha阶段，可能出现不可用情况。请谨慎使用于生产环境！
 
+[English Version](https://github.com/lhx077/FSBProcessor/blob/main/README_EN.md)
+
 # FSBProcessor 库
 
 ## 简介
