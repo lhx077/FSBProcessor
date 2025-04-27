@@ -1,6 +1,4 @@
-<div style="background-color: #FFCCCC; padding: 10px; border-left: 6px solid #FF0000; margin-bottom: 15px">
-<strong>⚠️ Warning:</strong> This project is currently in Alpha stage and may not be fully functional. Please use with caution in production environments!
-</div>
+> **⚠️ Warning:** This project is currently in Alpha stage and may not be fully functional. Please use with caution in production environments!
 
 # FSBProcessor Library
 
