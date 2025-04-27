@@ -325,7 +325,6 @@ namespace FSBLib
                         return outStream.ToArray();
                     }
 
-                // 其他格式的解码实现...
                 default:
                     // 对于不支持的格式，返回原始数据
                     Console.WriteLine($"警告: 不支持的音频格式 {sample.Format}，返回原始数据");
