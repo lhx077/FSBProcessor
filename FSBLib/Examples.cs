@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FSBLib.Examples
 {
@@ -113,6 +114,39 @@ namespace FSBLib.Examples
         }
         
         /// <summary>
+        /// 将WAV文件打包为FSB格式示例
+        /// </summary>
+        /// <param name="wavFilePaths">WAV文件路径列表</param>
+        /// <param name="outputFsbPath">输出FSB文件路径</param>
+        /// <param name="version">FSB版本</param>
+        public static void PackWavToFSBExample(List<string> wavFilePaths, string outputFsbPath, FSBProcessor.FSBVersion version = FSBProcessor.FSBVersion.FSB5)
+        {
+            try
+            {
+                Console.WriteLine($"将WAV文件打包为FSB: {outputFsbPath}");
+                
+                // 创建FSBProcessor实例
+                var processor = new FSBProcessor();
+                
+                // 显示要打包的文件
+                Console.WriteLine("要打包的WAV文件:");
+                foreach (var file in wavFilePaths)
+                {
+                    Console.WriteLine(file);
+                }
+                
+                // 将WAV文件打包为FSB文件
+                processor.PackWavToFSB(wavFilePaths, outputFsbPath, version);
+                
+                Console.WriteLine($"打包完成: {outputFsbPath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"打包FSB文件时出错: {ex.Message}");
+            }
+        }
+        
+        /// <summary>
         /// 运行所有示例的主方法
         /// </summary>
         public static void RunAllExamples()
@@ -171,6 +205,19 @@ namespace FSBLib.Examples
                 // 运行打包示例
                 Console.WriteLine("\n3. 打包FSB文件示例\n");
                 PackToFSBExample(audioFiles, outputFsbPath);
+                
+                // 运行WAV打包示例
+                Console.WriteLine("\n4. WAV文件打包为FSB示例\n");
+                // 筛选出WAV文件
+                var wavFiles = audioFiles.Where(f => Path.GetExtension(f).Equals(".wav", StringComparison.OrdinalIgnoreCase)).ToList();
+                if (wavFiles.Count > 0)
+                {
+                    PackWavToFSBExample(wavFiles, "wav_packed.fsb");
+                }
+                else
+                {
+                    Console.WriteLine("没有找到WAV文件用于示例");
+                }
             }
             
             Console.WriteLine("\n示例运行完成");

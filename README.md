@@ -9,8 +9,10 @@ FSBProcessor 是一个用于处理 FMOD 的 FSB (FSBank) 格式音频文件的 C
 - 解析 FSB 文件结构，提取音频信息
 - 将 FSB 文件解码为 WAV 格式
 - 将普通音频文件（如 WAV、MP3 等）打包为 FSB 格式
-- 支持多种 FSB 版本（FSB1-FSB5）
-- 支持多种音频格式（PCM、MP3 等）
+- 支持 WAV 文件直接打包为 FSB 格式
+- 支持多种 FSB 版本（FSB1-FSB5）的完整解析
+- 支持多种音频格式（PCM、MP3、Vorbis 等）
+- 精确提取元数据中的采样率信息
 
 ## 系统要求
 
@@ -91,11 +93,35 @@ processor.PackToFSB(audioFiles, "output.fsb", FSBProcessor.FSBVersion.FSB5);
 Console.WriteLine("打包完成: output.fsb");
 ```
 
+### 将 WAV 文件打包为 FSB 格式
+
+```csharp
+using FSBLib;
+using System.Collections.Generic;
+
+// 创建 FSBProcessor 实例
+var processor = new FSBProcessor();
+
+// 准备要打包的WAV文件列表
+var wavFiles = new List<string>
+{
+    "path/to/audio1.wav",
+    "path/to/audio2.wav"
+};
+
+// 将WAV文件打包为FSB文件（保留原始格式）
+processor.PackWavToFSB(wavFiles, "output.fsb", FSBProcessor.FSBVersion.FSB5);
+
+Console.WriteLine("打包完成: output.fsb");
+```
+
 ## 注意事项
 
-- 目前库支持的音频格式有限，主要支持 PCM 和 MP3 格式
-- FSB5 格式的完整支持仍在开发中
+- 库现已支持多种音频格式，包括 PCM、MP3 和 Vorbis 格式
+- 新增对 WAV 文件的直接打包支持，保留原始音频格式和质量
+- FSB5 格式现已得到完整支持，包括元数据采样率的精确提取
 - 对于某些特殊的 FSB 文件，可能需要进一步的格式适配
+- 使用 PackWavToFSB 方法可以获得更好的音频质量和更精确的格式控制
 
 ## 许可证
 
