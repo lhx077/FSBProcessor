@@ -1,6 +1,4 @@
-<div style="background-color: #FFCCCC; padding: 10px; border-left: 6px solid #FF0000; margin-bottom: 15px">
-<strong>⚠️ 警告：</strong> 本项目目前处于Alpha阶段，可能出现不可用情况。请谨慎使用于生产环境！
-</div>
+> **⚠️ 警告：** 本项目目前处于Alpha阶段，可能出现不可用情况。请谨慎使用于生产环境！
 
 # FSBProcessor 库
 
