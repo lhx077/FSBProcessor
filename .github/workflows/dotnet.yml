@@ -21,6 +21,26 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Pack
+      run: dotnet pack FSBLib/FSBLib.csproj --configuration Release --no-build --output nupkgs
+    - name: Upload NuGet Package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./nupkgs/FSBLib.${{ github.event.release.tag_name }}.nupkg
+        asset_name: FSBLib.${{ github.event.release.tag_name }}.nupkg
+        asset_content_type: application/zip
+    - name: Upload Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./FSBLib/bin/Release/netstandard2.0/FSBLib.dll
+        asset_name: FSBLib.dll
+        asset_content_type: application/octet-stream

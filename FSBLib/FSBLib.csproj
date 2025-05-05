@@ -4,16 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>FSB音频文件处理库，支持FSB文件的解码和打包</Description>
+    <Description>FSBProcessor 是一个用于处理 FMOD 的 FSB (FSBank) 格式音频文件的 C# 库。该库提供了将 FSB 文件解码为普通音频格式（如 WAV）以及将普通音频打包为 FSB 格式的功能，方便 Unity/UE 游戏制作 mod 使用。</Description>
     <Authors>lhx077</Authors>
     <Version>1.1.0</Version>
     <Copyright>lhx077</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/lhx077/FSBProcessor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lhx077/FSBProcessor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>audio;unity;mod;fmod;audio-processing;fsb;fsb5;audio-processor</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
