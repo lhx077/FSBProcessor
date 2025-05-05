@@ -5,7 +5,8 @@ name: .NET Release
 
 on:
   release:
-    types: [published]
+    types: [created, published, prereleased]
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: 6.0.x
@@ -38,15 +39,27 @@ jobs:
     - name: Pack NuGet
       run: dotnet pack ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --output nupkgs
     
-    - name: Upload NuGet Package to Release
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-artifacts
+        path: |
+          nupkgs/*.nupkg
+          FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.dll
+          FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.xml
+    
+    - name: Upload to Release
+      if: github.event_name == 'release'
       uses: softprops/action-gh-release@v1
       with:
         files: |
           nupkgs/*.nupkg
           FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.dll
           FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.xml
+        tag_name: ${{ github.ref_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Publish NuGet Package to NuGet.org
+    - name: Publish to NuGet.org
+      if: github.event_name == 'release'
       run: dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
