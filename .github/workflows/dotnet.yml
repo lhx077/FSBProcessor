@@ -1,46 +1,52 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: .NET Release
 
 on:
   release:
-    types: [created]
+    types: [published]
+
+env:
+  DOTNET_VERSION: 6.0.x
+  PROJECT_PATH: FSBLib/FSBLib.csproj
+  CONFIGURATION: Release
 
 jobs:
-  build:
-
+  build-and-publish:
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+    
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-restore
+    
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-    - name: Pack
-      run: dotnet pack FSBLib/FSBLib.csproj --configuration Release --no-build --output nupkgs
-    - name: Upload NuGet Package
-      uses: actions/upload-release-asset@v1
+      run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal
+    
+    - name: Pack NuGet
+      run: dotnet pack ${{ env.PROJECT_PATH }} --configuration ${{ env.CONFIGURATION }} --no-build --output nupkgs
+    
+    - name: Upload NuGet Package to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          nupkgs/*.nupkg
+          FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.dll
+          FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./nupkgs/FSBLib.${{ github.event.release.tag_name }}.nupkg
-        asset_name: FSBLib.${{ github.event.release.tag_name }}.nupkg
-        asset_content_type: application/zip
-    - name: Upload Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./FSBLib/bin/Release/netstandard2.0/FSBLib.dll
-        asset_name: FSBLib.dll
-        asset_content_type: application/octet-stream
+    
+    - name: Publish NuGet Package to NuGet.org
+      run: dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
