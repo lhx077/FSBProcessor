@@ -1,10 +1,10 @@
 > **⚠️ Warning:** This project is currently in Alpha stage and may not be fully functional. Please use with caution in production environments!
 
-# FSBProcessor Library
+# FSBProcessor Library (FSBLib)
 
 ## Introduction
 
-FSBProcessor is a C# library for processing FMOD's FSB (FSBank) format audio files. The library provides functionality to decode FSB files into common audio formats (such as WAV) and to package regular audio into FSB format, making it convenient for Unity/UE game modding.
+FSBProcessor(FSBLib) is a C# library for processing FMOD's FSB (FSBank) format audio files. The library provides functionality to decode FSB files into common audio formats (such as WAV) and to package regular audio into FSB format, making it convenient for Unity/UE game modding.
 
 ## Features
 
