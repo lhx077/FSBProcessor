@@ -8,6 +8,10 @@ on:
     types: [created, published, prereleased]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   DOTNET_VERSION: 6.0.x
   PROJECT_PATH: FSBLib/FSBLib.csproj
@@ -49,17 +53,23 @@ jobs:
           FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.xml
     
     - name: Upload to Release
-      if: github.event_name == 'release'
       uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: |
           nupkgs/*.nupkg
           FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.dll
           FSBLib/bin/${{ env.CONFIGURATION }}/netstandard2.0/FSBLib.xml
-        tag_name: ${{ github.ref_name }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        draft: false
+        prerelease: false
     
     - name: Publish to NuGet.org
-      if: github.event_name == 'release'
-      run: dotnet nuget push "nupkgs/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      if: success() && startsWith(github.ref, 'refs/tags/') && github.event_name == 'release'
+      env:
+        NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        for f in ./nupkgs/*.nupkg
+        do
+          dotnet nuget push "$f" --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        done
