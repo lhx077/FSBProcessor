@@ -2,11 +2,11 @@
 
 [English Version](https://github.com/lhx077/FSBProcessor/blob/main/README_EN.md)
 
-# FSBProcessor 库
+# FSBProcessor 库 （FSBLib）
 
 ## 简介
 
-FSBProcessor 是一个用于处理 FMOD 的 FSB (FSBank) 格式音频文件的 C# 库。该库提供了将 FSB 文件解码为普通音频格式（如 WAV）以及将普通音频打包为 FSB 格式的功能，方便 Unity/UE 游戏制作 mod 使用。
+FSBProcessor（FSBLib） 是一个用于处理 FMOD 的 FSB (FSBank) 格式音频文件的 C# 库。该库提供了将 FSB 文件解码为普通音频格式（如 WAV）以及将普通音频打包为 FSB 格式的功能，方便 Unity/UE 游戏制作 mod 使用。
 
 ## 功能特点
 
